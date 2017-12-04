@@ -43,4 +43,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+app.listen(80, function(err){
+  if(err){ console.log('info %s', 'could not be loaded to expressJS web server of NodeJs.'); }
+  console.log('info %s', 'succss to loaded web server of NodeJs.');
+});
