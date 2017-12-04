@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+var auth = require('./routes/auth');
 var users = require('./routes/users');
 
 var app = express();
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/auth', auth);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
@@ -43,6 +45,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//module.exports = app;
 app.listen(80, function(err){
   if(err){ console.log('info %s', 'could not be loaded to expressJS web server of NodeJs.'); }
   console.log('info %s', 'succss to loaded web server of NodeJs.');
