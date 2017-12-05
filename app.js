@@ -26,21 +26,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 // enable to bearer token.
 var bearerToken = require('express-bearer-token');
 app.use(bearerToken({
-  'bodyKey' : 'access_token', // The key access_token in the request body. (POST methods)
-  'queryKey' : 'access_token', // The key access_token in the request params. (GET methods)
-  'headerKey' : 'Bearer', // The value from the header Authorization: Bearer <token>.
-  'reqKey' : 'token' // req.token to express request of router.
+  'bodyKey': 'access_token', // The key access_token in the request body. (this key used to POST method)
+  'queryKey': 'access_token', // The key access_token in the request params. (this key used to GET methods)
+  'headerKey': 'Bearer', // The value from the header Authorization: Bearer <token>.
+  'reqKey': 'token' // req.token to express request of router.
 }));
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
   console.log('info %s %s', 'bear-token', req.token);
   next();
 });
 
 // see ip address for all routers.
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   console.log('info %s %s', 'ip', ip);
   next();
+});
+
+// boostrap4
+app.use(function(req, res, next){
+  var bootstrap4 = require('bootstrap');
+  console.log('info %s', bootstrap4);
+  return next();
 });
 
 app.use('/', index);
@@ -48,14 +55,14 @@ app.use('/auth', auth);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -66,7 +73,7 @@ app.use(function(err, req, res, next) {
 });
 
 //module.exports = app;
-app.listen(80, function(err){
-  if(err){ console.log('info %s', 'could not be loaded to expressJS web server of NodeJs.'); }
+app.listen(80, function (err) {
+  if (err) { console.log('info %s', 'could not be loaded to expressJS web server of NodeJs.'); }
   console.log('info %s', 'succss to loaded web server of NodeJs.');
 });

@@ -1,5 +1,11 @@
 var express = require('express');
+var acl = require('express-acl');
 var router = express.Router();
+
+router.use(function(req, res){
+    var authorization = req.headers['Authorization'] ? req.headers['Authorization'] : 'has not bearer tokens!';
+    console.log('info %s %s', 'auth-router authroization', authorization);
+});
 
 router.get('/jwt/create', function(req, res, next){
     var jwt = require('jsonwebtoken');
