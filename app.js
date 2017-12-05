@@ -23,9 +23,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// enable to bearer token.
+var bearerToken = require('express-bearer-token');
+app.use(bearerToken({
+  'bodyKey' : 'access_token', // The key access_token in the request body. (POST methods)
+  'queryKey' : 'access_token', // The key access_token in the request params. (GET methods)
+  'headerKey' : 'Bearer', // The value from the header Authorization: Bearer <token>.
+  'reqKey' : 'token' // req.token to express request of router.
+}));
+app.use(function(req, res, next){
+  console.log('info %s %s', 'bear-token', req.token);
+  next();
+});
+
+// see ip address for all routers.
 app.use(function(req, res, next){
   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  console.log(ip);
+  console.log('info %s %s', 'ip', ip);
   next();
 });
 
