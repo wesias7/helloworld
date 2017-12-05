@@ -23,6 +23,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req, res, next){
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log(ip);
+  next();
+});
+
 app.use('/', index);
 app.use('/auth', auth);
 app.use('/users', users);
